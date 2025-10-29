@@ -1,0 +1,15 @@
+{
+  "timestamp": 1761591579239,
+  "operation": {
+    "id": "backend:specifications:openapi"
+  },
+  "projectId": "eco-app-22",
+  "files": [
+    {
+      "path": "/mnt/data/eco-app-22/backend/openapi.yaml",
+      "type": "text",
+      "size": 8637,
+      "dependencies": false
+    }
+  ]
+}

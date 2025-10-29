@@ -1,2 +1,3 @@
-# eco-app-22-nyoq7k
-Deployment for project eco-app-22-nyoq7k
+app generated from cofounder/boilerplate
+
+instructions here on how to start api and frontend , whether in parallel or separately

@@ -1,0 +1,15 @@
+{
+  "timestamp": 1761591832760,
+  "operation": {
+    "id": "settings:config:package"
+  },
+  "projectId": "eco-app-22",
+  "files": [
+    {
+      "path": "/mnt/data/eco-app-22/vitereact/package.json",
+      "type": "text",
+      "size": 2949,
+      "dependencies": true
+    }
+  ]
+}

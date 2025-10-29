@@ -1,0 +1,15 @@
+{
+  "timestamp": 1761591558314,
+  "operation": {
+    "id": "backend:specifications:asyncapi"
+  },
+  "projectId": "eco-app-22",
+  "files": [
+    {
+      "path": "/mnt/data/eco-app-22/backend/asyncapi.yaml",
+      "type": "text",
+      "size": 3,
+      "dependencies": false
+    }
+  ]
+}

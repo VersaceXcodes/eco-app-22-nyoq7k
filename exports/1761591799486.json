@@ -1,0 +1,21 @@
+{
+  "timestamp": 1761591799486,
+  "operation": {
+    "id": "backend:tests:main"
+  },
+  "projectId": "eco-app-22",
+  "files": [
+    {
+      "path": "/mnt/data/eco-app-22/backend/server.test.ts",
+      "type": "text",
+      "size": 7358,
+      "dependencies": false
+    },
+    {
+      "path": "/mnt/data/eco-app-22/backend/jest.config.ts",
+      "type": "text",
+      "size": 439,
+      "dependencies": false
+    }
+  ]
+}

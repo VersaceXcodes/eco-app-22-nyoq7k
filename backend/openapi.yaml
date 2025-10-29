@@ -1,0 +1,363 @@
+openapi: 3.0.0
+info:
+  title: Villa Rental Platform API
+  version: 1.0.0
+  description: Comprehensive API for user-facing operations
+servers:
+  - url: http://localhost:3000/api
+    description: Development server
+components:
+  schemas:
+    User:
+      type: object
+      required:
+        - user_id
+        - full_name
+        - email
+        - created_at
+      properties:
+        user_id:
+          type: string
+        full_name:
+          type: string
+        email:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        is_verified:
+          type: boolean
+        profile_picture_url:
+          type: string
+          nullable: true
+    Villa:
+      type: object
+      required:
+        - villa_id
+        - host_id
+        - title
+        - description
+        - price_per_night
+        - created_at
+      properties:
+        villa_id:
+          type: string
+        host_id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        price_per_night:
+          type: number
+        max_guests:
+          type: integer
+        amenities:
+          type: array
+          items:
+            type: string
+        rules:
+          type: array
+          items:
+            type: string
+        photos:
+          type: array
+          items:
+            type: object
+            properties:
+              photo_id:
+                type: string
+              url:
+                type: string
+              is_primary:
+                type: boolean
+        created_at:
+          type: string
+          format: date-time
+    WishlistItem:
+      type: object
+      required:
+        - wishlist_item_id
+        - user_id
+        - villa_id
+        - added_at
+      properties:
+        wishlist_item_id:
+          type: string
+        user_id:
+          type: string
+        villa_id:
+          type: string
+        added_at:
+          type: string
+          format: date-time
+    Inquiry:
+      type: object
+      required:
+        - inquiry_id
+        - user_id
+        - villa_id
+        - message
+        - created_at
+        - is_read
+      properties:
+        inquiry_id:
+          type: string
+        user_id:
+          type: string
+        villa_id:
+          type: string
+        message:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        is_read:
+          type: boolean
+    AuthToken:
+      type: object
+      required:
+        - token
+        - expires_at
+      properties:
+        token:
+          type: string
+        expires_at:
+          type: string
+          format: date-time
+  parameters:
+    UserIdParam:
+      name: user_id
+      in: path
+      required: true
+      schema:
+        type: string
+    VillaIdParam:
+      name: villa_id
+      in: path
+      required: true
+      schema:
+        type: string
+    WishlistItemIdParam:
+      name: wishlist_item_id
+      in: path
+      required: true
+      schema:
+        type: string
+    InquiryIdParam:
+      name: inquiry_id
+      in: path
+      required: true
+      schema:
+        type: string
+    SearchParams:
+      in: query
+      properties:
+        location:
+          type: string
+        check_in:
+          type: string
+          format: date
+        check_out:
+          type: string
+          format: date
+        guests:
+          type: integer
+        amenities:
+          type: array
+          items:
+            type: string
+        price_min:
+          type: number
+        price_max:
+          type: number
+paths:
+  /users/{user_id}:
+    get:
+      summary: Retrieve public user profile
+      operationId: getUserProfile
+      parameters:
+        - $ref: "#/components/parameters/UserIdParam"
+      responses:
+        "200":
+          description: User profile data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+  /wishlists:
+    get:
+      summary: Get all wishlist items for current user
+      operationId: listWishlistItems
+      responses:
+        "200":
+          description: Array of wishlist items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/WishlistItem"
+    post:
+      summary: Add villa to wishlist
+      operationId: createWishlistItem
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - villa_id
+              properties:
+                villa_id:
+                  type: string
+      responses:
+        "201":
+          description: Created wishlist item
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WishlistItem"
+  /wishlists/{wishlist_item_id}:
+    delete:
+      summary: Remove item from wishlist
+      operationId: deleteWishlistItem
+      parameters:
+        - $ref: "#/components/parameters/WishlistItemIdParam"
+      responses:
+        "204":
+          description: Item deleted
+  /villas:
+    get:
+      summary: Search villas with filters
+      operationId: searchVillas
+      parameters:
+        - $ref: "#/components/parameters/SearchParams"
+      responses:
+        "200":
+          description: Array of villa listings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Villa"
+  /villas/{villa_id}/photos:
+    patch:
+      summary: Update villa photos
+      operationId: updateVillaPhotos
+      parameters:
+        - $ref: "#/components/parameters/VillaIdParam"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/Photo"
+      responses:
+        "200":
+          description: Updated villa photos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Villa"
+  /inquiries:
+    post:
+      summary: Send new inquiry
+      operationId: createInquiry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - user_id
+                - villa_id
+                - message
+              properties:
+                user_id:
+                  type: string
+                villa_id:
+                  type: string
+                message:
+                  type: string
+      responses:
+        "201":
+          description: Created inquiry
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Inquiry"
+  /inquiries/{inquiry_id}/read:
+    patch:
+      summary: Mark inquiry as read
+      operationId: markInquiryRead
+      parameters:
+        - $ref: "#/components/parameters/InquiryIdParam"
+      responses:
+        "200":
+          description: Inquiry status updated
+  /auth/register:
+    post:
+      summary: User registration
+      operationId: registerUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - full_name
+                - email
+                - password
+              properties:
+                full_name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "201":
+          description: Registration successful with auth token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthToken"
+  /auth/login:
+    post:
+      summary: User login
+      operationId: loginUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "200":
+          description: Login successful with auth token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthToken"
+securitySchemes:
+  bearerAuth:
+    type: http
+    scheme: bearer
+    bearerFormat: JWT
+    in: header
+    name: Authorization
